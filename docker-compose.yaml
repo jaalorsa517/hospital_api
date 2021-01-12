@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+  postgres:
+    container_name: postgres
+    restart: always
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: hospital
+    volumes:
+      - ./data/:/var/lib/postgresql
+    networks:
+      shares:
+        ipv4_address: 172.18.0.20
+
+  flask:
+    container_name: flask_app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    ports:
+      - "5000:5001"
+    environment:
+      FLASK_APP: main.py
+      FLASK_ENV: development
+      FLASK_DEBUG: 1
+      FLASK_RUN_HOST: 0.0.0.0
+      FLASK_RUN_PORT: 5001
+      POSTGRES_USER: hospital
+      POSTGRES_DB: hospital
+      POSTGRES_PASSWORD: hospital
+    command: flask run
+    volumes:
+      - .:/web_app
+    expose:
+      - 5000
+    networks:
+      shares:
+        ipv4_address: 172.18.0.10
+
+networks:
+  shares:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/24
+          gateway: 172.18.0.1
