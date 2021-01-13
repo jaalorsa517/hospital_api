@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, current_app
 from .api import api_blue
 
 app = Flask(__name__)

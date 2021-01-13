@@ -8,10 +8,12 @@ class Signin(Resource):
         id = request.get_json().get('id')
         email = request.get_json().get('email')
         telefono = request.get_json().get('telefono')
-        contraseña = get_password_random()
-        resp = signin_insert(id, email, telefono, contraseña)
+        contrasenya = get_password_random()
+        resp = signin_insert(id, email, telefono, contrasenya)
+
         return ({
-            "message": "Revise el correo brindado para la contraseña"
+            "message": "Revise el correo brindado para la contraseña",
+            "password": "{}".format(contrasenya)
         }, 201) if resp else ({
             "message": "Resource not created"
         }, 400, {
