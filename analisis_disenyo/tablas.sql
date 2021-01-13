@@ -20,7 +20,8 @@ ALTER TABLE
 
 --------------------------
 CREATE TABLE public.tipo_usuario (
-    pk_tipo_usuario serial,
+    pk_tipo_usuario_id serial,
+    descripcion_tipo_usuario character varying(10),
     PRIMARY KEY (pk_tipo_usuario)
 );
 
@@ -42,6 +43,7 @@ ALTER TABLE
 --------------------------------------------------
 CREATE TABLE public.tipo_servicio (
     pk_tipo_servicio_id serial,
+    descripcion_tipo_servicio character varying,
     PRIMARY KEY (pk_tipo_servicio_id)
 );
 
@@ -103,6 +105,7 @@ ALTER TABLE
     public.registro OWNER to hospital;
 
 ------------------------------------------------------------
+-- FUNCION Y TRIGGER
 CREATE
 OR REPLACE FUNCTION trigger_set_timestamp() RETURNS TRIGGER AS $ $ BEGIN NEW.update_on = NOW();
 
@@ -115,3 +118,20 @@ $ $ LANGUAGE plpgsql;
 CREATE TRIGGER set_timestamp BEFORE
 UPDATE
     ON usuario FOR EACH ROW EXECUTE PROCEDURE trigger_set_timestamp();
+
+----------------------------------------------------------------
+--DATOS NECESARIOS
+INSERT INTO
+    public.tipo_servicio(descripcion_tipo_servicio)
+VALUES
+    ('MEDICO');
+
+INSERT INTO
+    public.tipo_usuario(descripcion_tipo_usuario)
+VALUES
+    ('HOSPITAL');
+
+INSERT INTO
+    public.tipo_usuario(descripcion_tipo_usuario)
+VALUES
+    ('PACIENTE');

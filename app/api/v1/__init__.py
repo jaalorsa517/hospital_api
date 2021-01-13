@@ -20,10 +20,10 @@ from .resources.private.user.hospital import Hospital
 from .resources.private.user.hospital.doctor import Doctor
 from .resources.private.user.hospital.doctor.record import Record
 
-api.add_resource(Login, "/login",endpoint="login")
-api.add_resource(Signin, "/signin",endpoint="signin")
-api.add_resource(Passw,"/signin/pass/<string:id>",endpoint="pass")
-api.add_resource(Patient, "/patient",endpoint="patient")
-api.add_resource(Hospital, "/Hospital",endpoint="hospital")
-api.add_resource(Doctor, "/Hospital/doctor",endpoint="doctor")
-api.add_resource(Record, "/Hospital/doctor/record",endpoint="record")
+api.add_resource(Login, "/login", endpoint="login")
+api.add_resource(Signin, "/signin", endpoint="signin")
+api.add_resource(Passw, "/signin/pass/<string:id>", endpoint="pass")
+api.add_resource(Patient, "/patient/<string:id>", endpoint="patient")
+api.add_resource(Hospital, "/hospital/<string:id>", endpoint="hospital")
+api.add_resource(Doctor, "/hospital/doctor", endpoint="doctor")
+api.add_resource(Record, "/hospital/doctor/record", endpoint="record")
