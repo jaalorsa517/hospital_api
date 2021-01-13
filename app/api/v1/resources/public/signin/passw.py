@@ -1,7 +1,7 @@
 from flask_restful import Resource, request
 from werkzeug.security import generate_password_hash
 from app.models.user import update_pass, authorized
-from app.utils import token
+from app.auth import token
 
 
 class Passw(Resource):

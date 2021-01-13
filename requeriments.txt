@@ -2,4 +2,3 @@ flask
 flask-httpauth
 flask-restful
 psycopg2
-yapf
