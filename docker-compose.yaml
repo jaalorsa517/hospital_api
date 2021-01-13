@@ -30,6 +30,7 @@ services:
       POSTGRES_USER: hospital
       POSTGRES_DB: hospital
       POSTGRES_PASSWORD: hospital
+      POSTGRES_HOST: 172.18.0.20
     command: flask run
     volumes:
       - .:/web_app
