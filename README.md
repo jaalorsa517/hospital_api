@@ -10,6 +10,22 @@ Para levantar los servicios, solo hay que estar ubicado en la ubicación del pro
 Dentro de la carpeta raíz, se encuentra el backup de una collection POSTMAN. El archivo se llama `BackUp_POSTMAN_Hospital.postman_collection.json`. Con dicha collection se puede probar la API de una forma más interactiva.
 El host es `localhost:5000`
 
+### endpoints
+
++ /login
++ /signin
++ /signin/pass/<string:id>
++ /patient/<string:id>
++ /hospital/<string:id>
++ /hospital/<int:id>/doctor
+
+#### Ejemplo
+
++ `localhost:5000/signin/pass/21999111`
++ `localhost:5000/login`
+
+
+
 ## Base de datos
 La base de datos usada es Postgresql. Se encuentra en el contenedor llamado postgres.
 Para acceder a la base de datos, en la terminal, iniciar el contenedor postgres:
