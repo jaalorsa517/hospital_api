@@ -5,7 +5,7 @@ from app.models.hospital import new_hospital_user
 
 class Hospital(Resource):
 
-    decorators = [auth.login_required]
+    decorators = [auth.login_required(role='hospital')]
 
     def post(self, id):
         nombre = request.get_json().get('nombre')

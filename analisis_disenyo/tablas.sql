@@ -1,3 +1,20 @@
+-- CREATE DATABASE hospital WITH OWNER = hospital ENCODING = 'UTF8' LC_COLLATE = 'en_US.utf8' LC_CTYPE = 'en_US.utf8' TABLESPACE = pg_default CONNECTION LIMIT = -1;
+
+-----------------------------------
+-- TABLAS
+
+
+CREATE TABLE public.tipo_usuario (
+    pk_tipo_usuario_id serial,
+    descripcion_tipo_usuario character varying(10),
+    PRIMARY KEY (pk_tipo_usuario_id)
+);
+
+ALTER TABLE
+    public.tipo_usuario OWNER to hospital;
+
+--------------------------
+
 CREATE TABLE public.usuario (
     pk_usuario_identificacion character varying(20) NOT NULL,
     email character varying(50) NOT NULL,
@@ -9,24 +26,14 @@ CREATE TABLE public.usuario (
     created_on timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     direccion character varying(100),
     fk_tipo_usuario_id integer,
+    role_on character varying(10) DEFAULT 'basic',
     PRIMARY KEY (pk_usuario_identificacion),
     CONSTRAINT email_uq UNIQUE (email),
-    CONSTRAINT usuario_tipo_usuario_fkey FOREIGN KEY (fk_tipo_usuario_id) REFERENCES public.tipo_usuario (pk_tipo_usuario) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION NOT VALID;
-
+    CONSTRAINT usuario_tipo_usuario_fkey FOREIGN KEY (fk_tipo_usuario_id) REFERENCES public.tipo_usuario (pk_tipo_usuario_id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION NOT VALID
 );
 
 ALTER TABLE
     public.usuario OWNER to hospital;
-
---------------------------
-CREATE TABLE public.tipo_usuario (
-    pk_tipo_usuario_id serial,
-    descripcion_tipo_usuario character varying(10),
-    PRIMARY KEY (pk_tipo_usuario)
-);
-
-ALTER TABLE
-    public.tipo_usuario OWNER to hospital;
 
 --------------------------------------------
 CREATE TABLE public.paciente (
@@ -34,7 +41,7 @@ CREATE TABLE public.paciente (
     nacimiento date NOT NULL,
     fk_tipo_usuario_id integer,
     CONSTRAINT paciente_pkey PRIMARY KEY (pk_paciente_id),
-    CONSTRAINT paciente_tipo_usuario_fkey FOREIGN KEY (fk_tipo_usuario_id) REFERENCES public.tipo_usuario (pk_tipo_usuario) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION NOT VALID
+    CONSTRAINT paciente_tipo_usuario_fkey FOREIGN KEY (fk_tipo_usuario_id) REFERENCES public.tipo_usuario (pk_tipo_usuario_id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION NOT VALID
 );
 
 ALTER TABLE
@@ -56,7 +63,7 @@ CREATE TABLE public.hospital (
     fk_tipo_servicio_id integer,
     fk_tipo_usuario_id integer,
     CONSTRAINT hospital_pkey PRIMARY KEY (pk_hospital_id),
-    CONSTRAINT hospital_tipo_usuario_fkey FOREIGN KEY (fk_tipo_usuario_id) REFERENCES public.tipo_usuario (pk_tipo_usuario) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION NOT VALID,
+    CONSTRAINT hospital_tipo_usuario_fkey FOREIGN KEY (fk_tipo_usuario_id) REFERENCES public.tipo_usuario (pk_tipo_usuario_id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION NOT VALID,
     CONSTRAINT hospital_tipo_servicio_fkey FOREIGN KEY (fk_tipo_servicio_id) REFERENCES public.tipo_servicio (pk_tipo_servicio_id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION NOT VALID
 );
 
@@ -65,9 +72,9 @@ ALTER TABLE
 
 ----------------------------------------------------------------------------
 CREATE TABLE public.especialidad (
-    pk_especialidad serial,
+    pk_especialidad_id serial,
     nombre_especialidad character varying(50),
-    PRIMARY KEY (pk_especialidad)
+    PRIMARY KEY (pk_especialidad_id)
 );
 
 ALTER TABLE
@@ -80,7 +87,7 @@ CREATE TABLE public.medico (
     fk_tipo_servicio_id integer,
     CONSTRAINT medico_pkey PRIMARY KEY (pk_medico_id),
     CONSTRAINT medico_tipo_servicio_fkey FOREIGN KEY (fk_tipo_servicio_id) REFERENCES public.tipo_servicio (pk_tipo_servicio_id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION NOT VALID,
-    CONSTRAINT medicoo_especialidad_fkey FOREIGN KEY (fk_especialidad_id) REFERENCES public.especialidad (pk_especialidad) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION NOT VALID
+    CONSTRAINT medicoo_especialidad_fkey FOREIGN KEY (fk_especialidad_id) REFERENCES public.especialidad (pk_especialidad_id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION NOT VALID
 );
 
 ALTER TABLE
@@ -104,18 +111,20 @@ ALTER TABLE
 
 ------------------------------------------------------------
 -- FUNCION Y TRIGGER
-CREATE
-OR REPLACE FUNCTION trigger_set_timestamp() RETURNS TRIGGER AS $ $ BEGIN NEW.update_on = NOW();
 
-RETURN NEW;
-
+CREATE OR REPLACE FUNCTION trigger_set_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.update_on = NOW();
+  RETURN NEW;
 END;
+$$ LANGUAGE plpgsql;
 
-$ $ LANGUAGE plpgsql;
 
-CREATE TRIGGER set_timestamp BEFORE
-UPDATE
-    ON usuario FOR EACH ROW EXECUTE PROCEDURE trigger_set_timestamp();
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON usuario
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
 
 ----------------------------------------------------------------
 --DATOS NECESARIOS

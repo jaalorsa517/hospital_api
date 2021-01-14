@@ -7,7 +7,7 @@ from app.auth import token
 class Passw(Resource):
     def patch(self, id):
         _token = request.get_json().get('token')
-        if token is not None:
+        if _token is not None:
             try:
                 data = token.loads(_token)
                 datas = authorized(id)
@@ -16,7 +16,9 @@ class Passw(Resource):
                         if datas.get('email') == data:
                             passw = generate_password_hash(
                                 request.get_json().get('new_password'))
-                            if update_pass(id, passw):
+                            rol = request.get_json().get('rol')
+
+                            if update_pass(id, passw, rol):
                                 return ({}, 204)
 
             except Exception as e:

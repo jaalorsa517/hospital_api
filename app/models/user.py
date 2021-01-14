@@ -36,12 +36,28 @@ def authorized(id):
         return False
 
 
-def update_pass(id, passw):
+def get_role(id):
+    '''
+    Devuelve el role
+    '''
     try:
         conn = get_connection()
         cur = conn.cursor()
-        sql = "UPDATE public.usuario SET contrasenya='{}' WHERE pk_usuario_identificacion = '{}';".format(
-            passw, id)
+        cur.execute(
+            "SELECT role_on FROM public.usuario WHERE pk_usuario_identificacion = '{}'"
+            .format(id))
+        resul = cur.fetchone()[0]
+        return resul
+    except Exception as e:
+        return False
+
+
+def update_pass(id, passw, rol):
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        sql = "UPDATE public.usuario SET contrasenya='{}', role_on='{}' WHERE pk_usuario_identificacion = '{}';".format(
+            passw, rol, id)
         cur.execute(sql)
         conn.commit()
         conn.close()

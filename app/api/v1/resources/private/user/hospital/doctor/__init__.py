@@ -4,7 +4,7 @@ from app.models.doctor import new_doctor_user
 
 
 class Doctor(Resource):
-    decorators = [auth.login_required]
+    decorators = [auth.login_required(role=['hospital', 'doctor'])]
 
     def post(self, id):
         especialidad = request.get_json().get('especialidad')

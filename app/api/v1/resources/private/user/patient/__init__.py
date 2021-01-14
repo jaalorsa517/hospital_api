@@ -5,7 +5,10 @@ from app.models.patient import new_patient_user
 
 class Patient(Resource):
 
-    decorators = [auth.login_required]
+    decorators = [auth.login_required(role='patient')]
+
+    def get(self, id):
+        return 'hola'
 
     def post(self, id):
         nombre = request.get_json().get('nombre')
