@@ -12,6 +12,7 @@ def resonse_json(data, code, headers=None):
     return resp
 
 
+from .resources.public.test_connection import TestConnection
 from .resources.public.login import Login
 from .resources.public.signin import Signin
 from .resources.public.signin.passw import Passw
@@ -20,6 +21,7 @@ from .resources.private.user.hospital import Hospital
 from .resources.private.user.hospital.doctor import Doctor
 from .resources.private.user.hospital.doctor.record import Record
 
+api.add_resource(TestConnection,"/")
 api.add_resource(Login, "/login", endpoint="login")
 api.add_resource(Signin, "/signin", endpoint="signin")
 api.add_resource(Passw, "/signin/pass/<string:id>", endpoint="pass")

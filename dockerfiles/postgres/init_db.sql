@@ -1,4 +1,11 @@
--- CREATE DATABASE hospital WITH OWNER = hospital ENCODING = 'UTF8' LC_COLLATE = 'en_US.utf8' LC_CTYPE = 'en_US.utf8' TABLESPACE = pg_default CONNECTION LIMIT = -1;
+-- CREATE USER hospital;
+
+-- ALTER user hospital with password 'hospital';
+
+-- CREATE DATABASE hospital WITH OWNER = hospital ENCODING = 'UTF8';
+
+-- GRANT ALL PRIVILEGES ON DATABASE hospital TO hospital;
+
 
 -----------------------------------
 -- TABLAS
