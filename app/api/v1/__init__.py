@@ -25,5 +25,7 @@ api.add_resource(Signin, "/signin", endpoint="signin")
 api.add_resource(Passw, "/signin/pass/<string:id>", endpoint="pass")
 api.add_resource(Patient, "/patient/<string:id>", endpoint="patient")
 api.add_resource(Hospital, "/hospital/<string:id>", endpoint="hospital")
-api.add_resource(Doctor, "/hospital/doctor", endpoint="doctor")
-api.add_resource(Record, "/hospital/doctor/record", endpoint="record")
+api.add_resource(Doctor, "/hospital/<int:id>/doctor", endpoint="doctor")
+api.add_resource(Record,
+                 "/hospital/<int:id>/doctor/<int:doc>/record",
+                 endpoint="record")

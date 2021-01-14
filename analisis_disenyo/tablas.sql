@@ -76,8 +76,6 @@ ALTER TABLE
 ----------------------------------------------------------------------------
 CREATE TABLE public.medico (
     pk_medico_id serial,
-    nombres_medico character varying(50),
-    apellidos_medico character varying(50),
     fk_especialidad_id integer,
     fk_tipo_servicio_id integer,
     CONSTRAINT medico_pkey PRIMARY KEY (pk_medico_id),
@@ -135,3 +133,18 @@ INSERT INTO
     public.tipo_usuario(descripcion_tipo_usuario)
 VALUES
     ('PACIENTE');
+
+INSERT INTO
+    public.especialidad(nombre_especialidad)
+VALUES
+    ('GENERAL');
+
+INSERT INTO
+    public.especialidad(nombre_especialidad)
+VALUES
+    ('OFTAMOLOGIA');
+
+INSERT INTO
+    public.especialidad(nombre_especialidad)
+VALUES
+    ('PEDIATRIA');
